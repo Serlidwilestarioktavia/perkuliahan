@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Manajemen Perkuliahan</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div id="toast"></div>
+
+  <section id="authView" class="auth-page">
+    <div class="auth-card">
+      <div class="brand"><span>🎓</span><div><b>KuliahKu</b><small>Manajemen Perkuliahan</small></div></div>
+      <div id="loginBox">
+        <h1>Selamat datang 👋</h1>
+        <p class="muted">Masuk untuk mengelola jadwal, praktikum, tugas, dan deadline.</p>
+        <form id="loginForm">
+          <label>Email<input id="loginEmail" type="email" required placeholder="nama@email.com"></label>
+          <label>Password<input id="loginPassword" type="password" required placeholder="••••••••"></label>
+          <button class="primary full">Masuk</button>
+        </form>
+        <p class="switch">Belum punya akun? <button id="showRegister" class="link">Daftar</button></p>
+        <p class="demo-note">Gunakan akun Supabase Auth setelah database dikonfigurasi.</p>
+      </div>
+
+      <div id="registerBox" class="hidden">
+        <h1>Buat akun</h1>
+        <p class="muted">Daftarkan akun mahasiswa baru.</p>
+        <form id="registerForm">
+          <label>Nama lengkap<input id="regName" required placeholder="Nama lengkap"></label>
+          <label>Email<input id="regEmail" type="email" required placeholder="nama@email.com"></label>
+          <label>Password<input id="regPassword" type="password" minlength="6" required placeholder="Minimal 6 karakter"></label>
+          <button class="primary full">Daftar</button>
+        </form>
+        <p class="switch">Sudah punya akun? <button id="showLogin" class="link">Masuk</button></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="appView" class="hidden">
+    <aside class="sidebar">
+      <div class="brand"><span>🎓</span><div><b>KuliahKu</b><small>Manajemen Perkuliahan</small></div></div>
+      <nav>
+        <button class="nav active" data-page="dashboard">🏠 Dashboard</button>
+        <button class="nav" data-page="jadwal">📅 Jadwal Kuliah</button>
+        <button class="nav" data-page="praktikum">🧪 Praktikum</button>
+        <button class="nav" data-page="tugas">📝 Tugas & Deadline</button>
+      </nav>
+      <div class="userbox"><div id="userAvatar">U</div><div><b id="userName">Mahasiswa</b><small id="userEmail"></small></div><button id="logout" title="Keluar">↪</button></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><button id="mobileMenu" class="iconbtn">☰</button><span id="pageTitle">Dashboard</span></div>
+        <div class="date" id="today"></div>
+      </header>
+
+      <div class="content">
+        <div id="dashboard" class="page"></div>
+        <div id="jadwal" class="page hidden"></div>
+        <div id="praktikum" class="page hidden"></div>
+        <div id="tugas" class="page hidden"></div>
+      </div>
+    </main>
+  </section>
+
+  <dialog id="itemDialog">
+    <form method="dialog" id="itemForm" class="modal">
+      <div class="modalhead"><h2 id="modalTitle">Tambah Data</h2><button value="cancel" class="iconbtn">✕</button></div>
+      <input type="hidden" id="editId">
+      <input type="hidden" id="itemType">
+
+      <label>Nama / Mata Kuliah<input id="fTitle" required placeholder="Contoh: Jaringan Komputer"></label>
+
+      <div class="grid2" id="scheduleGrid">
+        <label id="dateWrap">Tanggal<input id="fDate" type="date"></label>
+
+        <label id="recurringWrap" class="hidden">
+          Hari
+          <select id="fDay">
+            <option value="1">Senin</option>
+            <option value="2">Selasa</option>
+            <option value="3">Rabu</option>
+            <option value="4">Kamis</option>
+            <option value="5">Jumat</option>
+            <option value="6">Sabtu</option>
+            <option value="7">Minggu</option>
+          </select>
+        </label>
+
+        <label>Waktu<input id="fTime" type="time"></label>
+      </div>
+
+      <div class="grid2">
+        <label>Jenis
+          <select id="fCategory">
+            <option value="kuliah">Kuliah</option>
+            <option value="praktikum">Praktikum</option>
+            <option value="tugas">Tugas</option>
+          </select>
+        </label>
+        <label>Lokasi / Kelas<input id="fLocation" placeholder="Ruang / Lab / Online"></label>
+      </div>
+
+      <label>Deskripsi / Catatan<textarea id="fNote" rows="3" placeholder="Catatan tambahan..."></textarea></label>
+
+      <label id="statusWrap">Status
+        <select id="fStatus">
+          <option value="belum">Belum selesai</option>
+          <option value="selesai">Selesai</option>
+        </select>
+      </label>
+
+      <p id="repeatInfo" class="repeat-info hidden">Jadwal kuliah dan praktikum akan otomatis berulang setiap minggu pada hari yang dipilih.</p>
+
+      <div class="modalactions"><button value="cancel" class="secondary">Batal</button><button class="primary">Simpan</button></div>
+    </form>
+  </dialog>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
